@@ -1,11 +1,11 @@
 const fs = require('fs');
 
 const tours = JSON.parse(
-  fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`)
+  fs.readFileSync(`${__dirname}/../dev-data/data/tours-simple.json`),
 );
 
 exports.checkID = (req, res, next, val) => {
-  console.log(`Tour id is ${val}`);
+  // console.log(`Tour id is ${val}`);
   if (req.params.id * 1 > tours.length) {
     return res.status(404).json({
       status: 'fail',
@@ -56,14 +56,14 @@ exports.createTour = (req, res) => {
   fs.writeFile(
     `${__dirname}/dev-data/data/tours-simple.json`,
     JSON.stringify(tours),
-    (err) => {
+    () => {
       res.status(201).json({
         status: 'success',
         data: {
           tour: newTour,
         },
       });
-    }
+    },
   );
 };
 
