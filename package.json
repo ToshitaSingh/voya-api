@@ -1,0 +1,22 @@
+{
+  "name": "voya-api",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ToshitaSingh/voya-api.git"
+  },
+  "author": "Toshita Singh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ToshitaSingh/voya-api/issues"
+  },
+  "homepage": "https://github.com/ToshitaSingh/voya-api#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^4.21.2"
+  }
+}
