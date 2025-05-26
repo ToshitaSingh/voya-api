@@ -5,8 +5,9 @@ The **Voya API** is a secure, scalable RESTful API built with **Node.js**, **Exp
 ## 🌐 Live API & Documentation
 
 - **Postman Documentation**: [View Online](https://documenter.getpostman.com/view/19410057/2sB2qcCgM9)
-- **Production URL**: `https://api.voya.com/api/v1`
-- **Dev URL**: `http://localhost:3000/api/v1`
+- **Production URL**: `https://voya-api.onrender.com`
+- **Dev URL**: `http://localhost:3000`
+  Note: Add /api/v1/ followed by API endpoints at the end of above URLs. (Reference below)
 
 ## 🧩 Features
 
