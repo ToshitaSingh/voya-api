@@ -74,7 +74,8 @@ app.use((req, res, next) => {
 // 3) ROUTES
 
 app.get('/', (req, res) => {
-  res.status(200).render('base');
+  console.log('Rendering with:', { tour: 'Home' });
+  res.render('base', { tour: 'Home' });
 });
 
 app.use('/api/v1/tours', tourRouter);
