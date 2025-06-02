@@ -1,4 +1,5 @@
 const path = require('path');
+const expressLayouts = require('express-ejs-layouts');
 const express = require('express');
 const morgan = require('morgan');
 const rateLimit = require('express-rate-limit');
@@ -16,6 +17,8 @@ const reviewRouter = require('./routes/reviewRoutes');
 const app = express();
 
 app.set('view engine', 'ejs');
+app.use(expressLayouts);
+app.set('layout', 'base'); // default layout file
 app.set('views', path.join(__dirname, 'views'));
 
 // 1) GLOBAL MIDDLEWARES
@@ -74,8 +77,7 @@ app.use((req, res, next) => {
 // 3) ROUTES
 
 app.get('/', (req, res) => {
-  console.log('Rendering with:', { tour: 'Home' });
-  res.render('base', { tour: 'Home' });
+  res.render('overview', { title: 'All Tours' });
 });
 
 app.use('/api/v1/tours', tourRouter);
