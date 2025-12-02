@@ -76,8 +76,19 @@ app.use((req, res, next) => {
 
 // 3) ROUTES
 
+// app.get('/', (req, res) => {
+//   res.status(200).render('base', {
+//     tour: 'The Forest Hiker',
+//     user: 'Toshita',
+//   });
+// });
+
 app.get('/', (req, res) => {
   res.render('overview', { title: 'All Tours' });
+});
+
+app.get('/tour', (req, res) => {
+  res.render('tour', { title: 'The Forest Hiker' });
 });
 
 app.use('/api/v1/tours', tourRouter);
