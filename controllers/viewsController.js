@@ -28,7 +28,15 @@ exports.getTour = catchAsync(async (req, res) => {
   res.status(200).render('tour', {
     title: `${tour.name} Tour`,
     tour,
-    includeMapbox: true,
+    // includeMapbox: true,
+    includeMap: true,
     user: req.user || null,
   });
 });
+
+exports.getLoginForm = (req, res) => {
+  // res.status(200).render('login', {
+  //   title: 'Log into your account',
+  // });
+  res.render('login', { title: 'Log in', error: 'Invalid email or password' });
+};

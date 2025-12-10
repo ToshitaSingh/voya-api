@@ -572,6 +572,23 @@ body {
   box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.15) !important;
 }
 
+.voya-marker {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #55c57a;
+  border: 3px solid #ffffff;
+  box-shadow: 0 0.3rem 0.9rem rgba(0, 0, 0, 0.25);
+}
+
+.voya-marker::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border-radius: 50%;
+  background: #ffffff22;
+}
+
 .section-reviews {
   margin-top: calc(0px - var(--section-rotate));
   padding: calc(5rem + var(--section-rotate)) 0;
