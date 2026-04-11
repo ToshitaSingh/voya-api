@@ -722,6 +722,7 @@ const loginForm = document.querySelector('.login-form .form');
 const loginBtn = document.querySelector('.btn');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
+const logoutBtn = document.querySelector('.nav__el--logout');
 // DELEGATION
 if (mapEl) {
     const locations = JSON.parse(mapEl.dataset.locations);
@@ -734,6 +735,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
         const password = passwordInput?.value;
         (0, _loginJs.login)(email, password);
     });
+});
+if (logoutBtn) logoutBtn.addEventListener('click', ()=>{
+    (0, _loginJs.logout)();
 });
 
 },{"./login.js":"7yHem","./leaflet.js":"xvuTT"}],"7yHem":[function(require,module,exports,__globalThis) {
@@ -771,11 +775,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "login", ()=>login);
+parcelHelpers.export(exports, "logout", ()=>logout);
 var _axios = require("axios");
 var _axiosDefault = parcelHelpers.interopDefault(_axios);
 var _alertsJs = require("./alerts.js");
 const login = async (email, password)=>{
-    console.log(email, password);
     try {
         const res = await (0, _axiosDefault.default)({
             method: 'POST',
@@ -793,6 +797,17 @@ const login = async (email, password)=>{
         }
     } catch (err) {
         (0, _alertsJs.showAlert)('error', err.response?.data?.message || 'Login failed');
+    }
+};
+const logout = async ()=>{
+    try {
+        const res = await (0, _axiosDefault.default)({
+            method: 'GET',
+            url: '/api/v1/users/logout'
+        });
+        if (res.data.status === 'success') location.reload(true);
+    } catch (err) {
+        (0, _alertsJs.showAlert)('error', 'Error logging out! Try again.');
     }
 };
 
