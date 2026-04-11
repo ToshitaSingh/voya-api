@@ -2,10 +2,14 @@
   "name": "voya-api",
   "version": "1.0.0",
   "main": "app.js",
+  "targets": {
+    "main": false
+  },
   "scripts": {
     "start:dev": "nodemon server.js",
     "start:prod": "node server.js",
-    "debug": "ndb server.js"
+    "debug": "ndb server.js",
+    "dev:client": "parcel ./public/js/index.js"
   },
   "repository": {
     "type": "git",
@@ -19,6 +23,7 @@
   "homepage": "https://github.com/ToshitaSingh/voya-api#readme",
   "description": "",
   "dependencies": {
+    "axios": "^1.13.2",
     "bcryptjs": "^3.0.2",
     "cookie-parser": "^1.4.7",
     "dotenv": "^16.5.0",
@@ -38,6 +43,7 @@
     "xss-clean": "^0.1.4"
   },
   "devDependencies": {
+    "buffer": "^6.0.3",
     "eslint": "^8.57.1",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^10.1.2",
@@ -47,6 +53,7 @@
     "eslint-plugin-prettier": "^5.2.6",
     "eslint-plugin-react": "^7.37.5",
     "ndb": "^1.1.5",
+    "parcel": "^2.16.4",
     "prettier": "^3.5.3"
   }
 }

@@ -35,10 +35,13 @@
 
 /* eslint-disable */
 
-console.log('login.js loaded');
-console.log('axios in login.js:', typeof axios);
+// console.log('login.js loaded');
+// console.log('axios in login.js:', typeof axios);
 
-const login = async (email, password) => {
+import axios from 'axios';
+import { showAlert } from './alerts.js';
+export const login = async (email, password) => {
+  console.log(email, password);
   try {
     const res = await axios({
       method: 'POST',
@@ -47,27 +50,12 @@ const login = async (email, password) => {
     });
 
     if (res.data.status === 'success') {
-      alert('Logged in successfully!');
+      showAlert('success', 'Logged in successfully!');
       window.setTimeout(() => {
         location.assign('/');
       }, 1500);
     }
   } catch (err) {
-    alert(err.response?.data?.message || 'Login failed');
+    showAlert('error', err.response?.data?.message || 'Login failed');
   }
 };
-
-document.addEventListener('DOMContentLoaded', () => {
-  const form = document.querySelector('.login-form .form');
-  if (!form) return;
-
-  const btn = form.querySelector('button');
-  if (!btn) return;
-
-  btn.addEventListener('click', (e) => {
-    e.preventDefault();
-    const email = document.getElementById('email').value;
-    const password = document.getElementById('password').value;
-    login(email, password);
-  });
-});
