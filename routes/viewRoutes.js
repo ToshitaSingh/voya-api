@@ -8,6 +8,7 @@ router.use(authController.isLoggedIn);
 
 router.get('/', viewController.getOverview);
 router.get('/tour/:slug', viewController.getTour);
+router.get('/test-programming-error', viewController.testProgrammingError);
 
 router.get('/login', viewController.getLoginForm);
 

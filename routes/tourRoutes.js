@@ -15,7 +15,7 @@ const reviewRouter = require('./../routes/reviewRoutes');
 //     authController.restrictTo('user'),
 //     reviewController.createReview,
 //   );
-
+router.get('/test-programming-error', tourController.testProgrammingError);
 router.use('/:tourId/reviews', reviewRouter);
 
 router

@@ -31,6 +31,8 @@ const server = app.listen(port, () => {
   console.log(`App is listening on http://localhost:${port}`);
 });
 
+console.log('ENV:', process.env.NODE_ENV);
+
 process.on('unhandledRejection', (err) => {
   console.log('UNHANDLED REJECTION! 💥 Shutting down...');
   console.log(err.name, err.message);

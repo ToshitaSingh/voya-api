@@ -10,6 +10,10 @@ exports.aliasTopTours = async (req, res, next) => {
   next();
 };
 
+exports.testProgrammingError = (req, res, next) => {
+  next(new Error('This is a programming error'));
+};
+
 exports.getAllTours = factory.getAll(Tour);
 exports.getTour = factory.getOne(Tour, { path: 'reviews' });
 exports.createTour = factory.createOne(Tour);

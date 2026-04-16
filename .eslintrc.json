@@ -12,6 +12,7 @@
     "no-process-exit": "off",
     "no-param-reassign": "off",
     "no-return-await": "off",
+    "no-lonely-if": "off",
     "no-underscore-dangle": "off",
     "class-methods-use-this": "off",
     "import/newline-after-import": ["off", { "count": 2 }],
