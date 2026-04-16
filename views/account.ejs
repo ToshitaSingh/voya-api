@@ -89,7 +89,11 @@
       <div class="user-view__form-container">
         <h2 class="heading-secondary ma-bt-md">Your account settings</h2>
 
-        <form class="form form-user-data" method='post' action='/submit-user-data'>
+        <!-- WITHOUT API -->
+        <!-- <form class="form form-user-data" method='post' action='/submit-user-data'> -->
+
+        <!-- WITH API -->
+        <form class="form form-user-data">
           <div class="form__group">
             <label class="form__label" for="name">Name</label>
             <input id="name" class="form__input" type="text" value="<%= user.name %>" required name="name">

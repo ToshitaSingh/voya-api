@@ -715,6 +715,7 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 
 },{}],"f2QDv":[function(require,module,exports,__globalThis) {
 /* eslint-disable */ var _loginJs = require("./login.js");
+var _updateSettingsJs = require("./updateSettings.js");
 var _leafletJs = require("./leaflet.js");
 // DOM ELEMENTS
 const mapEl = document.getElementById('map');
@@ -723,6 +724,9 @@ const loginBtn = document.querySelector('.btn');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
 const logoutBtn = document.querySelector('.nav__el--logout');
+const userDataForm = document.querySelector('.form-user-data');
+const userNameInput = document.getElementById('name');
+const userEmailInput = document.getElementById('email');
 // DELEGATION
 if (mapEl) {
     const locations = JSON.parse(mapEl.dataset.locations);
@@ -739,8 +743,14 @@ document.addEventListener('DOMContentLoaded', ()=>{
 if (logoutBtn) logoutBtn.addEventListener('click', ()=>{
     (0, _loginJs.logout)();
 });
+if (userDataForm) userDataForm.addEventListener('submit', (e)=>{
+    e.preventDefault();
+    const name = userNameInput?.value;
+    const email = userEmailInput?.value;
+    (0, _updateSettingsJs.updateData)(name, email);
+});
 
-},{"./login.js":"7yHem","./leaflet.js":"xvuTT"}],"7yHem":[function(require,module,exports,__globalThis) {
+},{"./login.js":"7yHem","./leaflet.js":"xvuTT","./updateSettings.js":"l3cGY"}],"7yHem":[function(require,module,exports,__globalThis) {
 // /* eslint-disable */
 // console.log('login.js loaded');
 // console.log('axios in login.js:', typeof axios);
@@ -5801,6 +5811,35 @@ const displayMap = (locations)=>{
     });
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["2HO6q","f2QDv"], "f2QDv", "parcelRequireccb5", {})
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"l3cGY":[function(require,module,exports,__globalThis) {
+// /* eslint-disable */
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "updateData", ()=>updateData);
+var _axios = require("axios");
+var _axiosDefault = parcelHelpers.interopDefault(_axios);
+var _alerts = require("./alerts");
+const updateData = async (name, email)=>{
+    try {
+        const res = await (0, _axiosDefault.default)({
+            method: 'PATCH',
+            url: '/api/v1/users/updateMe',
+            data: {
+                name,
+                email
+            }
+        });
+        if (res.data.status === 'success') {
+            (0, _alerts.showAlert)('success', 'Data updated successfully!');
+            window.setTimeout(()=>{
+                location.assign('/me');
+            }, 1500);
+        }
+    } catch (err) {
+        (0, _alerts.showAlert)('error', err.response.data.message);
+    }
+};
+
+},{"axios":"jo6P5","./alerts":"6Mcnf","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["2HO6q","f2QDv"], "f2QDv", "parcelRequireccb5", {})
 
 //# sourceMappingURL=index.js.map
