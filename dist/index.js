@@ -721,12 +721,9 @@ var _leafletJs = require("./leaflet.js");
 const mapEl = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
 const loginBtn = document.querySelector('.btn');
-const emailInput = document.getElementById('email');
-const passwordInput = document.getElementById('password');
 const logoutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
-const userNameInput = document.getElementById('name');
-const userEmailInput = document.getElementById('email');
+const userPasswordForm = document.querySelector('.form-user-password');
 // DELEGATION
 if (mapEl) {
     const locations = JSON.parse(mapEl.dataset.locations);
@@ -735,8 +732,8 @@ if (mapEl) {
 document.addEventListener('DOMContentLoaded', ()=>{
     if (loginForm && loginBtn) loginBtn.addEventListener('click', (e)=>{
         e.preventDefault();
-        const email = emailInput?.value;
-        const password = passwordInput?.value;
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
         (0, _loginJs.login)(email, password);
     });
 });
@@ -745,9 +742,29 @@ if (logoutBtn) logoutBtn.addEventListener('click', ()=>{
 });
 if (userDataForm) userDataForm.addEventListener('submit', (e)=>{
     e.preventDefault();
-    const name = userNameInput?.value;
-    const email = userEmailInput?.value;
-    (0, _updateSettingsJs.updateData)(name, email);
+    const name = document.getElementById('name').value;
+    const email = document.getElementById('email').value;
+    (0, _updateSettingsJs.updateSettings)({
+        name,
+        email
+    }, 'data');
+});
+if (userPasswordForm) userPasswordForm.addEventListener('submit', async (e)=>{
+    e.preventDefault();
+    document.querySelector('.btn--save-password').textContent = 'Updating...';
+    const passwordCurrent = document.getElementById('password-current').value;
+    const password = document.getElementById('password').value;
+    const passwordConfirm = document.getElementById('password-confirm').value;
+    console.log(passwordCurrent, password, passwordConfirm);
+    await (0, _updateSettingsJs.updateSettings)({
+        passwordCurrent,
+        password,
+        passwordConfirm
+    }, 'password');
+    document.querySelector('.btn--save-password').textContent = 'Save password';
+    document.getElementById('password-current').value = '';
+    document.getElementById('password').value = '';
+    document.getElementById('password-confirm').value = '';
 });
 
 },{"./login.js":"7yHem","./leaflet.js":"xvuTT","./updateSettings.js":"l3cGY"}],"7yHem":[function(require,module,exports,__globalThis) {
@@ -5815,22 +5832,20 @@ const displayMap = (locations)=>{
 // /* eslint-disable */
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "updateData", ()=>updateData);
+parcelHelpers.export(exports, "updateSettings", ()=>updateSettings);
 var _axios = require("axios");
 var _axiosDefault = parcelHelpers.interopDefault(_axios);
 var _alerts = require("./alerts");
-const updateData = async (name, email)=>{
+const updateSettings = async (data, type)=>{
     try {
+        const url = type === 'password' ? '/api/v1/users/updateMyPassword' : '/api/v1/users/updateMe';
         const res = await (0, _axiosDefault.default)({
             method: 'PATCH',
-            url: '/api/v1/users/updateMe',
-            data: {
-                name,
-                email
-            }
+            url,
+            data
         });
         if (res.data.status === 'success') {
-            (0, _alerts.showAlert)('success', 'Data updated successfully!');
+            (0, _alerts.showAlert)('success', `${type.toUpperCase()} updated successfully!`);
             window.setTimeout(()=>{
                 location.assign('/me');
             }, 1500);
