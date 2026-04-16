@@ -8,9 +8,9 @@
   </div>
 
   <nav class="nav nav__user">
-    <% if (user) { %>
+    <% if (typeof user !== 'undefined' && user) { %>
       <a class="nav__el nav__el--logout" href="#">Log out</a>
-      <a class="nav__el" href="#">
+      <a class="nav__el" href="/me">
         <img
           class="nav__user-img"
           src="/img/users/<%= user.photo %>"

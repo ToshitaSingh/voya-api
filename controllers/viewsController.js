@@ -46,5 +46,11 @@ exports.getLoginForm = (req, res) => {
   // res.status(200).render('login', {
   //   title: 'Log into your account',
   // });
-  res.render('login', { title: 'Log in', error: 'Invalid email or password' });
+  res
+    .status(200)
+    .render('login', { title: 'Log in', error: 'Invalid email or password' });
+};
+
+exports.getAccount = (req, res) => {
+  res.status(200).render('account', { title: 'Your account' });
 };

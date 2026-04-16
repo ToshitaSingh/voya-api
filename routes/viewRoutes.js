@@ -11,5 +11,6 @@ router.get('/tour/:slug', viewController.getTour);
 router.get('/test-programming-error', viewController.testProgrammingError);
 
 router.get('/login', viewController.getLoginForm);
+router.get('/me', authController.protect, viewController.getAccount);
 
 module.exports = router;
