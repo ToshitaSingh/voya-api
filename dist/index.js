@@ -718,7 +718,7 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 var _leafletJs = require("./leaflet.js");
 // DOM ELEMENTS
 const mapEl = document.getElementById('map');
-const loginForm = document.querySelector('.login-form .form');
+const loginForm = document.querySelector('.form--login');
 const loginBtn = document.querySelector('.btn');
 const emailInput = document.getElementById('email');
 const passwordInput = document.getElementById('password');
