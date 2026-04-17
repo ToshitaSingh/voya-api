@@ -90,7 +90,7 @@
         <h2 class="heading-secondary ma-bt-md">Your account settings</h2>
 
         <!-- WITHOUT API -->
-        <!-- <form class="form form-user-data" method='post' action='/submit-user-data'> -->
+        <!-- <form class="form form-user-data" method='post' action='/submit-user-data' enctype="multipart/form-data"> -->
 
         <!-- WITH API -->
         <form class="form form-user-data">
@@ -106,7 +106,9 @@
 
           <div class="form__group form__photo-upload">
             <img class="form__user-photo" src="/img/users/<%= user.photo %>" alt="User photo">
-            <a class="btn-text" href="">Choose new photo</a>
+            <!-- <a class="btn-text" href="">Choose new photo</a> -->
+            <input class="form__upload" id="photo" name="photo" type="file" accept="image/*">
+            <label class="form__label" for="photo">Choose new photo</label>
           </div>
 
           <div class="form__group right">
