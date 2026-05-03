@@ -1,28 +1,58 @@
 const nodemailer = require('nodemailer');
+const ejs = require('ejs');
+const htmlToText = require('html-to-text');
 
-const sendEmail = async (options) => {
-  // 1) Create a transporter
-  const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
-    auth: {
-      user: process.env.EMAIL_USERNAME,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-    // Activate in gmail "less secure app" option
-  });
+module.exports = class Email {
+  constructor(user, url) {
+    this.to = user.email;
+    this.firstName = user.name.split(' ')[0];
+    this.url = url;
+    this.from = `Toshita <${process.env.EMAIL_FROM}>`;
+  }
 
-  // 2) Define the email options
-  const mailOptions = {
-    from: 'Toshita <hello@toshita.io>',
-    to: options.email,
-    subject: options.subject,
-    text: options.message,
-    // html:
-  };
+  newTransport() {
+    if (process.env.NODE_ENV === 'production') {
+      // sendgrid
+      return 1;
+    }
 
-  // 3) Actually send the email
-  await transporter.sendMail(mailOptions);
+    return nodemailer.createTransport({
+      host: process.env.EMAIL_HOST,
+      port: process.env.EMAIL_PORT,
+      auth: {
+        user: process.env.EMAIL_USERNAME,
+        pass: process.env.EMAIL_PASSWORD,
+      },
+      // Activate in gmail "less secure app" option
+    });
+  }
+
+  // Send the actual email
+  async send(template, subject) {
+    // 1) Render HTML based on an ejs template
+    const html = ejs.renderFile(
+      `${__dirname}/../views/emails/${template}.ejs`,
+      {
+        firstName: this.firstName,
+        url: this.url,
+        subject,
+      },
+    );
+
+    // 2) Define the email options
+    const mailOptions = {
+      from: this.from,
+      to: this.to,
+      subject,
+      html,
+      text: htmlToText.fromString(html),
+    };
+
+    // 3) Create a transport and send email
+    await this.newTransport().sendMail(mailOptions);
+  }
+
+  async sendWelcome() {
+    await this.send('welcome', 'Welcome to the Voya Family!');
+  }
 };
-
-module.exports = sendEmail;
