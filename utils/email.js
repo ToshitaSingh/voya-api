@@ -1,6 +1,6 @@
 const nodemailer = require('nodemailer');
 const ejs = require('ejs');
-const htmlToText = require('html-to-text');
+const { convert } = require('html-to-text');
 
 module.exports = class Email {
   constructor(user, url) {
@@ -11,10 +11,10 @@ module.exports = class Email {
   }
 
   newTransport() {
-    if (process.env.NODE_ENV === 'production') {
-      // sendgrid
-      return 1;
-    }
+    // if (process.env.NODE_ENV === 'production') {
+    //   // sendgrid
+    //   return 1;
+    // }
 
     return nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
@@ -23,14 +23,14 @@ module.exports = class Email {
         user: process.env.EMAIL_USERNAME,
         pass: process.env.EMAIL_PASSWORD,
       },
-      // Activate in gmail "less secure app" option
+      // Activate in gmail "less secure app" option ---OUTDATED, use app passwords, OAuth2, Sendgrid/Mailtrap
     });
   }
 
   // Send the actual email
   async send(template, subject) {
-    // 1) Render HTML based on an ejs template
-    const html = ejs.renderFile(
+    // 1) Render child template
+    const emailBody = await ejs.renderFile(
       `${__dirname}/../views/emails/${template}.ejs`,
       {
         firstName: this.firstName,
@@ -38,17 +38,25 @@ module.exports = class Email {
         subject,
       },
     );
+    // 2) Inject into base template
+    const html = await ejs.renderFile(
+      `${__dirname}/../views/emails/baseEmail.ejs`,
+      {
+        subject,
+        body: emailBody,
+      },
+    );
 
-    // 2) Define the email options
+    // 3) Define the email options
     const mailOptions = {
       from: this.from,
       to: this.to,
       subject,
       html,
-      text: htmlToText.fromString(html),
+      text: convert(html),
     };
 
-    // 3) Create a transport and send email
+    // 4) Create a transport and send email
     await this.newTransport().sendMail(mailOptions);
   }
 
