@@ -11,10 +11,17 @@ module.exports = class Email {
   }
 
   newTransport() {
-    // if (process.env.NODE_ENV === 'production') {
-    //   // sendgrid
-    //   return 1;
-    // }
+    if (process.env.NODE_ENV === 'production') {
+      // sendgrid XX BREVO
+      return nodemailer.createTransport({
+        host: process.env.BREVO_HOST,
+        port: process.env.BREVO_PORT,
+        auth: {
+          user: process.env.BREVO_LOGIN,
+          pass: process.env.BREVO_PASSWORD,
+        },
+      });
+    }
 
     return nodemailer.createTransport({
       host: process.env.EMAIL_HOST,
@@ -49,7 +56,8 @@ module.exports = class Email {
 
     // 3) Define the email options
     const mailOptions = {
-      from: this.from,
+      // from: this.from,
+      from: 'usedforlearning001@gmail.com',
       to: this.to,
       subject,
       html,
@@ -57,7 +65,9 @@ module.exports = class Email {
     };
 
     // 4) Create a transport and send email
-    await this.newTransport().sendMail(mailOptions);
+    const info = await this.newTransport().sendMail(mailOptions);
+
+    console.log(info);
   }
 
   async sendWelcome() {
