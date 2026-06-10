@@ -39,7 +39,7 @@ exports.getTour = catchAsync(async (req, res, next) => {
     tour,
     // includeMapbox: true,
     includeMap: true,
-    user: req.user || null,
+    // user: req.user || null,
   });
 });
 

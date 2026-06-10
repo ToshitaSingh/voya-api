@@ -71,10 +71,11 @@ exports.login = catchAsync(async (req, res, next) => {
 });
 
 exports.logout = (req, res) => {
-  res.cookie('jwt', 'loggedout', {
-    expires: new Date(Date.now() + 10 * 1000),
-    httpOnly: true,
-  });
+  // res.cookie('jwt', 'loggedout', {
+  //   expires: new Date(Date.now() + 10 * 1000),
+  //   httpOnly: true,
+  // });
+  res.clearCookie('jwt');
   res.status(200).json({ status: 'success' });
 };
 
@@ -126,7 +127,7 @@ exports.protect = catchAsync(async (req, res, next) => {
 exports.isLoggedIn = async (req, res, next) => {
   console.log('isLoggedIn middleware HIT for:', req.originalUrl);
   res.locals.user = null;
-  if (req.cookies.jwt) {
+  if (req.cookies.jwt && req.cookies.jwt !== 'loggedout') {
     try {
       // 1) Verify token
       const decoded = await promisify(jwt.verify)(
@@ -149,9 +150,13 @@ exports.isLoggedIn = async (req, res, next) => {
       res.locals.user = currentUser;
       return next();
     } catch (err) {
+      console.log('ISLOGGEDIN ERROR:', err.message);
       return next();
     }
   }
+  console.log('cookies:', req.cookies);
+  console.log('jwt:', req.cookies.jwt);
+  console.log('route:', req.originalUrl);
   next();
 };
 
