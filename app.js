@@ -33,14 +33,24 @@ const scriptSrcUrls = [
   'https://unpkg.com/',
   'https://tile.openstreetmap.org',
   'https://cdn.jsdelivr.net',
+  'https://checkout.razorpay.com',
+  'https://cdn.razorpay.com',
 ];
 const styleSrcUrls = [
   'https://unpkg.com/',
   'https://tile.openstreetmap.org',
   'https://fonts.googleapis.com/',
 ];
-const connectSrcUrls = ['https://unpkg.com', 'https://tile.openstreetmap.org'];
-const fontSrcUrls = ['fonts.googleapis.com', 'fonts.gstatic.com'];
+const connectSrcUrls = [
+  'https://unpkg.com',
+  'https://tile.openstreetmap.org',
+  'https://api.razorpay.com',
+];
+const frameSrcUrls = ['https://api.razorpay.com'];
+const fontSrcUrls = [
+  'https://fonts.gstatic.com',
+  'https://fonts.googleapis.com',
+];
 
 // app.use(helmet());
 app.use(
@@ -54,6 +64,7 @@ app.use(
       objectSrc: [],
       imgSrc: ["'self'", 'blob:', 'data:', 'https:'],
       fontSrc: ["'self'", ...fontSrcUrls],
+      frameSrc: ["'self'", ...frameSrcUrls],
     },
   }),
 );

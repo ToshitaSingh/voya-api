@@ -717,6 +717,7 @@ function hmrAccept(bundle /*: ParcelRequire */ , id /*: string */ ) {
 /* eslint-disable */ var _loginJs = require("./login.js");
 var _updateSettingsJs = require("./updateSettings.js");
 var _leafletJs = require("./leaflet.js");
+var _paymentsJs = require("./payments.js");
 // DOM ELEMENTS
 const mapEl = document.getElementById('map');
 const loginForm = document.querySelector('.form--login');
@@ -724,6 +725,7 @@ const loginBtn = document.querySelector('.btn');
 const logoutBtn = document.querySelector('.nav__el--logout');
 const userDataForm = document.querySelector('.form-user-data');
 const userPasswordForm = document.querySelector('.form-user-password');
+const bookBtn = document.getElementById('book-tour');
 // DELEGATION
 if (mapEl) {
     const locations = JSON.parse(mapEl.dataset.locations);
@@ -769,8 +771,13 @@ if (userPasswordForm) userPasswordForm.addEventListener('submit', async (e)=>{
     document.getElementById('password').value = '';
     document.getElementById('password-confirm').value = '';
 });
+if (bookBtn) bookBtn.addEventListener('click', (e)=>{
+    e.target.textContent = 'Processing...';
+    const { tourId } = e.target.dataset;
+    (0, _paymentsJs.bookTour)(tourId);
+});
 
-},{"./login.js":"7yHem","./leaflet.js":"xvuTT","./updateSettings.js":"l3cGY"}],"7yHem":[function(require,module,exports,__globalThis) {
+},{"./login.js":"7yHem","./leaflet.js":"xvuTT","./updateSettings.js":"l3cGY","./payments.js":"bdLO7"}],"7yHem":[function(require,module,exports,__globalThis) {
 // /* eslint-disable */
 // console.log('login.js loaded');
 // console.log('axios in login.js:', typeof axios);
@@ -5858,6 +5865,39 @@ const updateSettings = async (data, type)=>{
     }
 };
 
-},{"axios":"jo6P5","./alerts":"6Mcnf","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["2HO6q","f2QDv"], "f2QDv", "parcelRequireccb5", {})
+},{"axios":"jo6P5","./alerts":"6Mcnf","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"bdLO7":[function(require,module,exports,__globalThis) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "bookTour", ()=>bookTour);
+var _axios = require("axios");
+var _axiosDefault = parcelHelpers.interopDefault(_axios);
+var _alertsJs = require("./alerts.js");
+const bookTour = async (tourId)=>{
+    // 1) Get create-order from api
+    try {
+        const res = await (0, _axiosDefault.default)(`/api/v1/bookings/create-order/${tourId}`, {
+            method: 'POST'
+        });
+        const { order, razorpayKey } = res.data;
+        const options = {
+            key: razorpayKey,
+            amount: order.amount,
+            name: 'Voya',
+            description: 'Tour Booking',
+            order_id: order.id,
+            handler: async function(response) {
+                await (0, _axiosDefault.default).post(`/api/v1/bookings/verify-payment`, response);
+                location.assign('/my-tours');
+            }
+        };
+        const rzp = new Razorpay(options);
+        rzp.open();
+    } catch (err) {
+        console.error(err);
+        (0, _alertsJs.showAlert)('error', err);
+    }
+};
+
+},{"axios":"jo6P5","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./alerts.js":"6Mcnf"}]},["2HO6q","f2QDv"], "f2QDv", "parcelRequireccb5", {})
 
 //# sourceMappingURL=index.js.map
