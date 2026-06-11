@@ -42,3 +42,20 @@ exports.createCheckoutOrder = catchAsync(async (req, res, next) => {
     return res.status(400).send(`Error: ${err.message}`);
   }
 });
+
+exports.verifyPayment = catchAsync(async (req, res, next) => {
+  const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
+    req.body;
+  const generatedSignature = crypto
+    .createHmac('sha256', process.env.RAZORPAY_TEST_KEY_SECRET)
+    .update(`${razorpay_order_id}|${razorpay_payment_id}`)
+    .digest('hex');
+
+  if (generatedSignature !== razorpay_signature) {
+    return next(new AppError('Payment Verification failed', 400));
+  }
+
+  res.status(200).json({
+    status: 'success',
+  });
+});

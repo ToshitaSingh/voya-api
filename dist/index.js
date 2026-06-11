@@ -5882,12 +5882,20 @@ const bookTour = async (tourId)=>{
         const options = {
             key: razorpayKey,
             amount: order.amount,
+            currency: order.currency,
             name: 'Voya',
             description: 'Tour Booking',
             order_id: order.id,
             handler: async function(response) {
-                await (0, _axiosDefault.default).post(`/api/v1/bookings/verify-payment`, response);
+                await (0, _axiosDefault.default).post(`/api/v1/bookings/verify-payment`, {
+                    razorpay_order_id: response.razorpay_order_id,
+                    razorpay_payment_id: response.razorpay_payment_id,
+                    razorpay_signature: response.razorpay_signature
+                });
                 location.assign('/my-tours');
+            },
+            theme: {
+                color: '#55c57a'
             }
         };
         const rzp = new Razorpay(options);
