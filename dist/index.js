@@ -5887,12 +5887,19 @@ const bookTour = async (tourId)=>{
             description: 'Tour Booking',
             order_id: order.id,
             handler: async function(response) {
-                await (0, _axiosDefault.default).post(`/api/v1/bookings/verify-payment`, {
-                    razorpay_order_id: response.razorpay_order_id,
-                    razorpay_payment_id: response.razorpay_payment_id,
-                    razorpay_signature: response.razorpay_signature
-                });
-                location.assign('/my-tours');
+                try {
+                    console.log('PAYMENT SUCCESS');
+                    console.log(response);
+                    await (0, _axiosDefault.default).post(`/api/v1/bookings/verify-payment`, {
+                        razorpay_order_id: response.razorpay_order_id,
+                        razorpay_payment_id: response.razorpay_payment_id,
+                        razorpay_signature: response.razorpay_signature
+                    });
+                    console.log('VERIFY SUCCESS');
+                    location.assign('/');
+                } catch (err) {
+                    console.error(err.response?.data || err);
+                }
             },
             theme: {
                 color: '#55c57a'

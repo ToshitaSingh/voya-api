@@ -1,7 +1,8 @@
 const Razorpay = require('razorpay');
-// const crypto = require('crypto');
+const crypto = require('crypto');
 
 const Tour = require('../models/tourModel');
+const Booking = require('../models/bookingModel');
 // const factory = require('../controllers/handlerFactory');
 const catchAsync = require('../utils/catchAsync');
 const AppError = require('../utils/appError');
@@ -44,6 +45,9 @@ exports.createCheckoutOrder = catchAsync(async (req, res, next) => {
 });
 
 exports.verifyPayment = catchAsync(async (req, res, next) => {
+  console.log('VERIFY PAYMENT HIT');
+
+  console.log(req.body);
   const { razorpay_order_id, razorpay_payment_id, razorpay_signature } =
     req.body;
   const generatedSignature = crypto
@@ -55,6 +59,21 @@ exports.verifyPayment = catchAsync(async (req, res, next) => {
     return next(new AppError('Payment Verification failed', 400));
   }
 
+  const order = await razorpay.orders.fetch(razorpay_order_id);
+
+  const existingBooking = await Booking.findOne({
+    tour: order.notes.tourId,
+    user: order.notes.userId,
+  });
+
+  if (!existingBooking) {
+    await Booking.create({
+      tour: order.notes.tourId,
+      user: order.notes.userId,
+      price: order.amount / 100,
+      paid: true,
+    });
+  }
   res.status(200).json({
     status: 'success',
   });
