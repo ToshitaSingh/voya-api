@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 const Razorpay = require('razorpay');
 const crypto = require('crypto');
 
