@@ -13,3 +13,7 @@ logs
 *.env
 config.env
 config.env
+
+# Parcel
+.parcel-cache/
+dist/
