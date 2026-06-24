@@ -21,6 +21,8 @@ const viewRouter = require('./routes/viewRoutes');
 
 const app = express();
 
+app.enable('trust proxy');
+
 app.set('view engine', 'ejs');
 app.use(expressLayouts);
 app.set('layout', 'base'); // default layout file
