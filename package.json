@@ -8,8 +8,8 @@
   "scripts": {
     "start:dev": "nodemon server.js",
     "start:prod": "NODE_ENV=production node server.js",
-    "debug": "ndb server.js",
-    "dev:client": "parcel ./public/js/index.js"
+    "dev:client": "parcel ./public/js/index.js",
+    "build": "parcel build public/js/index.js --dist-dir public/dist"
   },
   "repository": {
     "type": "git",
