@@ -331,11 +331,17 @@ body {
 }
 
 .header {
-  background-color: #444;
+  /* background-color: #444; */
+  background: rgba(255, 255, 255, 0.85);
   padding: 0 5rem;
   height: 8rem;
-  position: relative;
-  z-index: 100;
+  /* position: relative; */
+  position: sticky;
+  /* z-index: 100; */
+  top: 0;
+  z-index: 999;
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(226, 232, 240, 0.6);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -355,7 +361,8 @@ body {
   }
 }
 .header__logo img {
-  height: 3.5rem;
+  /* height: 3.5rem; */
+  height: 3rem;
 }
 @media only screen and (max-width: 62.5em) {
   .header__logo {
@@ -945,7 +952,8 @@ body {
 .nav__el,
 .nav__el:link,
 .nav__el:visited {
-  color: #f7f7f7;
+  /* color: #f7f7f7; */
+  color: var(--text);
   text-transform: uppercase;
   font-size: 1.6rem;
   text-decoration: none;
@@ -957,7 +965,8 @@ body {
   align-items: center;
   -webkit-transition: all 0.2s;
   transition: all 0.2s;
-  font-weight: 400;
+  /* font-weight: 400; */
+  font-weight: 500;
   background: none;
   border: none;
   cursor: pointer;
@@ -967,7 +976,8 @@ body {
 .nav__el:active {
   -webkit-transform: translateY(-2px);
   transform: translateY(-2px);
-  text-shadow: 0 0.7rem 1rem black;
+  /* text-shadow: 0 0.7rem 1rem black; */
+  color: var(--primary);
 }
 .nav__el:not(:last-child) {
   margin-right: 3rem;
