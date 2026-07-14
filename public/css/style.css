@@ -419,6 +419,7 @@ body {
     to(#28b487)
   ); */
   /* background-image: linear-gradient(to right bottom, #7dd56f, #28b487); */
+  background-image: linear-gradient(rgb(255 255 255 / 0%), #000000a8);
   opacity: 0.85;
 }
 
